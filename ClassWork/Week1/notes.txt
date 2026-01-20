@@ -1,0 +1,33 @@
+Array Based
+    Stack
+    Queue
+
+List Based
+    Stack
+    Queue
+
+
+Stack
+    Top
+    Size
+
+Queue
+    Front
+    Rear
+    Size
+
+    [3][2][5][7][9][1][9]
+     F                 R
+
+    Push
+    [3][2][5][7][9][1][9][3]
+     F                    R   
+
+
+    Pop
+    [X][2][5][7][9][1][9][3]
+        F                 R
+
+
+Array Based Circular Queue
+    When front reaches end of queue size, goes back to index 0
