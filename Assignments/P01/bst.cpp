@@ -104,120 +104,117 @@ class Bst {
         }
     }
 
+    void rmLeaf(Node* &current, Node* &trail)
+    {
+        if(trail->right == current)
+        {
+            // Delete desired node
+            delete current;
+            trail->right = nullptr;
+        }
+
+        if(trail->left == current)
+        {
+            // Delete desired node
+            delete current;
+            trail->left = nullptr;
+        }
+    }
+
+    void rmOneChild(Node* &current, Node* &trail)
+    {
+        // Variable pointing to child (single leave)
+        Node* child;
+
+        // Point child to correct node
+        if(current->left)
+            child = current->left;
+        if(current->right)
+            child = current->right;
+
+        // Delete current and connect trail to child
+        if(trail->data > child->data)
+        {
+            delete current;
+            trail->left = child;
+        }
+
+        if(trail->data < child->data)
+        {
+            delete current;
+            trail->right = child;
+        }
+    }
+
+    void rmTwoChildren(Node* &current)
+    {
+        // Keep track of successor and parent node
+        Node* parent = current;
+        Node* successor = current->right;
+
+        // Get successor
+        while(successor->left)
+        {
+            parent = successor;
+            successor = successor->left;
+        }
+
+        // copy successor value to current value
+        current->data = successor->data;
+
+        // link parent to successors left child
+        if(parent->left == successor)
+            parent->left = successor->right;
+        else
+            parent->right = successor->right;
+
+        delete successor;
+    }
+
+    // NEED COMMENTS
+    // ALSO NEED TO CREATE 3 SEPARETE FUNCTIONS FOR EACH CASE (NO CHILDREN, ONE CHILD, TWO CHILDREN)
     void _remove(Node *&subroot, int x)
     {
 
+        // Return is subroot is null
+        if(!subroot)
+            return;
+
         Node* current = subroot;
-        Node* trail;
+        Node* trail = subroot;
 
-
-        // Trying iteratively
-        if(subroot-> data == x)
+        while(current && current->data != x)
         {
-            //handle
-        }
+            trail = current;
 
-        while(subroot && subroot->data != x)
-        {
-            if(x > subroot->data)
-                trail = current;
+            if(x > current->data)
                 current = current->right;
 
-            if(x < subroot->data)
-                trail = current;
+            else
                 current = current->left;
         }
 
-        if(subroot->data == x)
+        // Error if value is not in tree
+        if(!current)
+        {
+            cout << endl << "ERROR: " << x << " Is not in the tree" << endl;
+            return;
+        }
+
+        if(current && current->data == x)
         {
             // If node has two children
-            if(subroot->left && subroot->right)
-            {
-                //Someone take place of parent
-            }
+            if(current->left && current->right)
+                rmTwoChildren(current);
 
             // If node only has one child
-            else if(subroot->left || subroot->right)
-            {
-                cout << "HERE2";
-                // Create child
-                Node child = subroot->left || subroot->right;
-
-                //Link node's parent to node's child
-
-            }
+            else if(current->left || current->right)
+                rmOneChild(current, trail);
 
             // If node has no children
             else
-            {
-                if(trail->right == current)
-                {
-                    trail->right = nullptr;
-                }
-
-                if(trail->left == current)
-                {
-                    trail->left = nullptr;
-                }
-                // Set node's parent pointer to null and remove node.
-            }
+                rmLeaf(current, trail);
         }
-
-
-
-        //I'm thinking i need a trail to keep track of the node above.
-
-        // Handle if value is not in tree.
-        // Traverse tree
-        // Find value
-        // Determine if value has children
-        // If no children, simple delete
-        // If one child, child takes place of parent
-        // If two child, one child will take place of parent
-
-        // // Not found
-        // if(!subroot) {return;}
-        
-        // // Node is found
-        // if(subroot->data == x)
-        // {
-            
-        //     // If node has two children
-        //     if(subroot->left && subroot->right)
-        //     {
-        //         //Someone take place of parent
-        //     }
-
-        //     // If node only has one child
-        //     else if(subroot->left || subroot->right)
-        //     {
-        //         cout << "HERE2";
-        //         // Create child
-        //         Node child = subroot->left || subroot->right;
-
-        //         //Link node's parent to node's child
-
-        //     }
-
-        //     // If node has no children
-        //     else
-        //     {
-        //         cout << "HERE3";
-        //         return;
-        //         // Set node's parent pointer to null and remove node.
-        //     }
-        // }
-
-        // else
-        // {
-        //     // if new node is less than current node, go left
-        //     if (x < subroot->data)
-        //         _remove(subroot->left, x);
-
-        //     // if new node is greater than current node, go right
-        //     else
-        //         _remove(subroot->right, x);
-        // }
     }
 
 
@@ -306,8 +303,8 @@ int main()
     // int root = pow(2, 15) / 2;
     // int max = pow(2, 15) - 1;
 
-    int root = 50;
-    int max = 100;
+    int root = 5000;
+    int max = 10000;
 
     // Create vector of ints
     vector<int> arr;
@@ -319,7 +316,7 @@ int main()
     tree.insert(root);
 
     // insert 5000 nodes into tree and vector
-    for (int i = 1; i < 10; i++) {
+    for (int i = 1; i < 100; i++) {
         int r = rand() % max;
 
         // Generate random number until its not a duplicate
@@ -331,11 +328,10 @@ int main()
         arr.push_back(r);
     }
 
-    tree.print();
-    cout << endl << endl;
-    tree.remove(92);
 
     tree.print();
+    cout << endl << endl;
+
     tree.saveDotFile("bst_snapshot.dot");
 
     Bst tree2;

@@ -1,0 +1,12 @@
+need to add check to ensure cant insert value that is already in tree
+need to add check to ensure cant remove value that isn't in tree.
+
+removing with two children is not working 100%
+
+does not work when trying to remove a node whos sucessor is further down the tree than one level.
+
+Test deleting when the tree is empty;
+Test deleting when tree has one node;
+Test deleting a leaf;
+Test deleting a node with one child;
+Test deleting a node with two children;
