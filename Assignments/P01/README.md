@@ -19,15 +19,11 @@ Some challenges I encountered included deciding whether to implement the deletio
 
 ## Instruction
 
-### 1. Clone repository or connect through GitHub Codespaces in VS Code
-
-### 2. Navigate to program directory
-cd /workspaces/5243-Algorithm_Analysis/Assignments/P01
-
-### 3. Compile the code
-g++ bst.cpp -o bst
-
-### 4. Run the code
-./bst
-
-### 5. Check output in terminal and bst_snapshot.dot file
+1. Clone the repository or connect through GitHub Codespaces in VS Code.
+2. Locate the directory where the program exists:
+   - `/workspaces/5243-Algorithm_Analysis/Assignments/P01`
+3. Compile the code:
+   - `g++ bst.cpp -o bst`
+4. Run the code:
+   - `./bst`
+5. View the output in the terminal and in the `bst_snapshot.dot` file.
