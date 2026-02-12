@@ -13,8 +13,11 @@
 #### Complete
 ##### A tree where all levels are completely filled except possibly the last level, and all nodes in the last level are as far left as possible.
 
-#### Full/Perfect
+#### Full
 ##### A tree where every node has either 0 or 2 children (no nodes with only one child).
+
+#### Perfect
+#### The tree is just perfect.
 
 #### Ancestor
 ##### Any node that lies on the path from the root to a given node (excluding the node itself).
@@ -34,6 +37,15 @@
 #### In-Order Predecessor
 ##### The node visited immediately before a given node during an in-order traversal of the tree.
 
+#### Pre-Order
+##### Root, Left, Right
+
+#### In-Order 
+##### Left, Root, Right
+
+#### Post-Order
+##### Left, Right, Root
+
 #### O(LogN) search time
 
 ---
@@ -46,10 +58,24 @@
 
 #### Left Child  - 2* i + 2
 #### Right Child - 2* i + 1
-#### Parent      - i/ 2 - 1
+#### Parent      - (i-1) // 2
 
 ---
 
 ### Binary Heap == Priority Queue
 
-#### Parent < children
+#### Sort
+#### O(n^2)
+#### O(n log(n))
+
+
+#### Building binary heap (min or max priority)
+#### insert everything at the rear
+#### bubble up
+
+#### Popping from heap
+#### Make lowest index in array the root
+#### Bubble down
+##### Swap with highest priority child
+
+#### Heapify - Rearanging values in the array to maintain heap property
