@@ -1,620 +1,120 @@
-workloads:
+## Program 2
 
-a - random insert + random loopup
-b - sorted insert
-c - mixed operations
-d - heavy loop up
 
-n = 1,000
-n = 5,000
-n = 20,000
-n = 80,000
+### Provided to You
 
-for each of these (structure, workload, N)
-  run 7 trials and get median, min, max
+There are c++ implementations for:
+- Binary Heap
+- Binary Search Tree
+- Hash Table
+- Linked List
+- Ordered Dynamic Array
 
-# 📦 Program 2
-# Experimental Comparison of Core Data Structures
+with all necessary basic functionality and small tests to show how to use each of them. 
+There is no additional code added to count any of the stats we want to collect for comparing different data structures and how they handle certain types of behaviors (insert, find, delete). Below is the new folder structure: 
 
-## Overview
+### Folder Structure
 
-- In this assignment, you will conduct controlled experiments comparing core data structures under standardized workloads.
-
-- This is not a proof assignment.
-
-- This is not a reimplementation assignment.
-
-- This is an **experimental analysis assignment**. You will:
-
-  - Instrument provided implementations
-  - Run standardized workloads
-  - Collect structural metrics
-  - Analyze scaling behavior
-  - Draw engineering conclusions
-
-This assignment emphasizes experimental discipline that is used in graduate courses.
-
----
-
-# 🎯 Learning Objectives
-
-By completing this assignment, you will:
-
-1. Empirically validate complexities (expected outcomes, comparing performance, etc.). 
-2. Observe worst-case vs average-case behavior.
-3. Understand how workload affects performance (Well we will try).
-4. Develop reproducible benchmarking methodology (Confident we can do this).
-5. Practice structured algorithmic reasoning (Thats on you ... ).
-
----
-
-# 🧱 Structures Included
-
-You will be provided implementations of:
-
-- Dynamic Array (not STL Vector)
-- Linked List (generic implementation)
-- Unbalanced Binary Search Tree (BST)
-- Binary Heap 
-- Hash Table (collision resolution = chaining)
-
-You may modify these implementations **only to add instrumentation** (you know ... like injecting code stuff to measure stuff. Where stuff = `comparison`, `operations`,`counts`, etc.)
-
->**You may not redesign structures themselves**[^1]
-
----
-
-# 🧪 Experimental Architecture
-
-This is a set of programs and scripts where a C++ driver called `runner` invokes python scripts to 
-
-You will use:
-
-- A standardized **Python workload generator**
-- A C++ `runner` executable that:
-  - Reads operations from stdin
-  - Executes one workload trial
-  - Outputs exactly one JSON summary line
-- The Python harness will:
-  - Generate workloads
-  - Execute 7 trials
-  - Compute medians
-  - Write CSV results
-
-You may not modify workload definitions or random seed.
-
-
-START
-
----
-# 📊 Required Results & Reporting Format
-
-All groups must use the same reporting structure to ensure comparability.
-
----
-
-# 🔁 Standardized Workload Generator Specification
-
-To ensure fairness across experiments, all students must use the following workload rules.
-
-## Randomness
-
-- Use a **fixed RNG seed = 42** (this means everyone seeds the RNG with 42)
-- Use uniform distribution for random values
-- Value range: integers in `[0, 10N]`
-
-This avoids:
-- accidental duplicates dominating behavior
-- adversarial patterns unless explicitly required
-
----
-
-## Workload Definitions (Formalized)
-
-### Workload A — Random Insert + Random Lookup
-
-1. Generate N random integers.
-2. Values drawn uniformly from `[0, 10N]`
-3. Insert all N random integers.
-4. Perform N random lookups (values drawn from same range).
-
----
-
-### Workload B — Sorted Insert
-
-1. Generate N random integers.
-2. Sort them ascending.
-3. Insert in sorted order.
-4. Perform N random lookups.
-
-BST degradation must be observable here.
-
->Note: BST tests capped at N ≤ 20,000[^2].
-
-
----
-
-### Workload C — Mixed Operations
-
-Start with empty structure.
-
-Perform 2*N total operations:
-
-- 50% lookup
-- 25% insert
-- 25% delete
-
-- Important: 
-  - Operations must be `randomly interleaved`.
-  - Delete only if structure not empty.
-
-### Workload D — Lookup Heavy
-
-1. Insert N random values (integers)
-2. Perform 5N `random lookups` [^2]
-
----
-
-# 📏 Required Input Sizes
-
-You must test at least 4 sizes:
-
-- N = 1,000  
-- N = 5,000  
-- N = 20,000  
-- N = 80,000  
-
-Exception:
-- For Sorted Insert (Workload B), cap N at **20,000** for BST.
-
-If a workload exceeds 10 seconds per run, stop increasing N and report the maximum feasible size.
-
-# 🔢 Required Repetitions
-
-For each (Structure, Workload, N):
-
-- Run **7 trials**
-- Report the **median**
-- You may optionally include min/max
-
----
-
-# 🧮 Instrumentation Contract
-
-Each structure must track:
-
-### Required Counters
-
-All structures must report (counters):
-
-- `comparisons`
-- `structural_ops`
-- `inserts`
-- `deletes`
-- `lookups`
-- `resize_events`
-
-Operation totals must match workload definitions.
-
-### Structure-Specific Counters
-
-`Hash table:`
-- probe count (open addressing) OR
-- chain traversal count (chaining)
-- resize events
-
-`BST:`
-- node visits
-
-`Heap:`
-- swaps
-- heapify steps
-
-`Linked List:`
-- node traversals
-
-You must clearly define what each counter represents.
-
----
-
-# 📋 Required Results Tables
-
-## Table 1 — Structural Metrics Summary
-
-For each workload and N:
-
-| Structure | N   | Comparisons | Structural Ops | Resize Events | Median Time (optional) |
-| --------- | --- | ----------- | -------------- | ------------- | ---------------------- |
-
-One table per workload.
-
----
-
-## Table 2 — Scaling Trend Table
-
-For each structure under Workload A:
-
-| N   | Comparisons | Comparisons / N | Comparisons / (N log N) |
-| --- | ----------- | --------------- | ----------------------- |
-
-This forces you to examine growth trends, not just raw numbers.
-
----
-
-# 📈 Required Plots
-
-You must include:
-
-### Plot 1 — Comparisons vs N (per workload)
-
-- X-axis: N
-- Y-axis: comparisons
-- One line per structure
-
----
-
-### Plot 2 — Structural Ops vs N
-
-Same structure as above.
-
----
-
-### Optional Plot — Time vs N
-
-Only if timing is included.
-
-Median values only.
-
----
-
-# 📝 Required Analysis Structure
-
-Your report must follow this order:
-
----
-
-## 1. Experimental Design
-
-- How workloads were implemented
-- What counters mean
-- Why N values were chosen
-
----
-
-## 2. Scaling Observations
-
-Discuss:
-
-- Which structures scale linearly?
-- Which appear logarithmic?
-- Which degrade under sorted insert?
-- Does the empirical data match theoretical expectations?
-
----
-
-## 3. Structural Tradeoff Analysis
-
-For each structure:
-
-- Strengths
-- Weaknesses
-- Ideal use case
-
----
-
-## 4. Engineering Decision Framework
-
-Answer:
-
-If building:
-- A dictionary
-- A scheduler
-- A database index
-- A logging system
-
-Which structure and why?
-
-You must justify using experimental evidence.
-
----
-
-# 🚫 Common Mistakes (Preemptive Strike Section)
-
-You will lose points if:
-
-- You only report time.
-- You do not define counters clearly.
-- You do not control randomness.
-- You do not repeat trials.
-- Your analysis merely restates tables without interpretation.
-
----
-
-# 🎯 Why This Matters
-
-This assignment is not about proving asymptotics.
-
-It is about:
-
-- validating theory experimentally
-- understanding structure behavior
-- thinking like an engineer
----
-
-END
-
----
-
-
-
-# 📊 Required Counters
-
-
-
----
-
-# 📐 Counter Definitions Standard
-
-## Comparisons
-
-Count one comparison whenever you evaluate a key relation:
-
-- `<`, `>`, `<=`, `>=`, `==`, `!=` between keys
-
-Do not count loop bounds or null checks.
-
----
-
-## Structural Operations
-
-Count meaningful structural work beyond comparisons.
-
-### Dynamic Array
-- Element shift: +1 per element moved
-- Resize copy: +1 per element copied
-- Resize event: increment `resize_events`
-
-### Linked List
-- Node traversal: +1 per node visited
-
-### BST
-- Node visit: +1 structural_op
-- Key comparison at node: +1 comparison
-- Pointer reassignment during delete: +1 structural_op
-
-### Binary Heap
-- Key comparison during percolation: +1 comparison
-- Swap: +1 structural_op
-
-### Hash Table
-
-Chaining:
-- Node visited in chain: +1 structural_op
-- Key equality check: +1 comparison
-
-Open Addressing:
-- Slot probe: +1 structural_op
-- Key equality check: +1 comparison
-- Resize/rehash: increment `resize_events`
-
-You must clearly document your counting policy in your report.
-
----
-
-# 📋 Required Tables
-
-## Table 1 — Structural Metrics Summary (per workload)
-
-| Structure | N   | Comparisons | Structural Ops | Resize Events | Median Time |
-| --------- | --- | ----------- | -------------- | ------------- | ----------- |
-
-One table per workload.
-
----
-
-## Table 2 — Scaling Trend (Workload A)
-
-| N   | Comparisons | Comparisons / N | Comparisons / (N log N) |
-| --- | ----------- | --------------- | ----------------------- |
-
-Interpret trends.
-
----
-
-# 📈 Required Plots
-
-1. Comparisons vs N (per workload)
-2. Structural Ops vs N
-3. Optional: Time vs N (median only)
-
-All plots must be labeled clearly.
-
----
-
-# 📝 Required Written Report (3–5 pages)
-
-## 1. Experimental Design
-- Workload explanation
-- Counter definitions
-- Rationale for chosen N values
-
-## 2. Results
-- Tables and graphs
-- Brief summary per workload
-
-## 3. Scaling Analysis
-Discuss:
-
-- Which structures scale linearly?
-- Which scale logarithmically?
-- Which degrade under sorted input?
-- Does empirical behavior match theory?
-
-## 4. Structural Tradeoffs
-
-For each structure:
-- Strengths
-- Weaknesses
-- Ideal use cases
-
-## 5. Engineering Decisions
-
-If building:
-- A dictionary
-- A priority scheduler
-- A database index
-- A logging system
-
-Which structure would you choose and why?
-
-Justify with experimental evidence.
-
----
-
-# 🚫 Common Mistakes (Avoid These)
-
-You will lose points if:
-
-- You only report time.
-- You modify workload definitions.
-- You change the seed.
-- You do not repeat trials.
-- Your analysis merely restates tables.
-- Counters are inconsistent or undefined.
-
----
-
-# 📦 Submission Requirements
-
-Submit:
-
-1. C++ runner executable (or source + build instructions)
-2. Python harness
-3. CSV results files
-4. Written PDF report
-
----
-
-# 📏 Grading Rubric
-
-| Category                | Weight |
-| ----------------------- | ------ |
-| Correct instrumentation | 25%    |
-| Experimental rigor      | 25%    |
-| Analysis quality        | 30%    |
-| Clarity & organization  | 20%    |
-
----
-
-
-## Directory Structure
+Here is the new organization for `Program 02`'s 
 
 ```txt
-Program_2/
-│
-├── README.md                    ← Assignment spec (the final polished one)
-│
-├── python/
-│   ├── harness.py               ← Main experimental driver
-│   ├── workloads.py             ← WorkloadGenerator (A–D)
-│   └── cpp_adapter.py           ← Subprocess wrapper for C++ runner
-│
-├── cpp/
-│   ├── runner.cpp               ← C++ runner (stdin → JSON line)
-│   ├── counters.hpp             ← Counters struct
-│   ├── structure.hpp            ← Base Structure interface
-│   │
-│   ├── bst.hpp                  ← BST implementation (instrumented)
-│   ├── heap.hpp                 ← Heap implementation (instrumented)
-│   ├── hash.hpp                 ← Hash table implementation (instrumented)
-│   ├── array.hpp                ← Dynamic array
-│   └── list.hpp                 ← Linked list
-│
-├── build.sh                     ← Simple compile script
-│
-└── results/
-    └── (generated CSVs go here)
+📁 05-P02
+├── ✳️ README.md        // This file
+└── 📁 src              // Code files  
+    ├── 📁 include      // Include hpps can't run directly
+    │   ├── 📕 binaryHeap.hpp
+    │   ├── 📕 bst.hpp
+    │   ├── 📕 counters.hpp
+    │   ├── 📕 hashTable.hpp
+    │   ├── 📕 json.hpp
+    │   ├── 📕 linkedList.hpp
+    │   ├── 📕 sortedArraySet.hpp
+    │   ├── 📕 termcolor.hpp
+    │   └── 📕 usagePrinter.hpp
+    ├── 📁 tests        // Tests for each of the hpp data structures
+    │   ├── 📕 test_BinaryHeap.cpp  
+    │   ├── 📕 test_Bst.cpp
+    │   ├── 📕 test_HashTable.cpp
+    │   ├── 📕 test_LinkedList.cpp
+    │   └── 📕 test_SortedArraySet.cpp
+    └── 📕workload_generator.cpp
 ```
 
+Where the `src` folder holds all the `hpp's` in the `include` folder and the `tests` folder containing `cpp's` that should compile and run showing each data structure's hpp works. 
 
+### Compiling 
 
-# ✅ What Should Exist in the `Program_1/` Folder
+There is no executable code uploaded. You must compile it to run it. To compile a **`test`** or the **`workload_generator`** you can do it a couple of different ways depending on where you want the object file to end up and where you compile from.
 
-Nothing more than this:
+A typical compile command looks like: 
 
-```
-Program_1/
-│
-├── README.md                    ← Assignment spec (this file)
-│
-├── python/
-│   ├── harness.py               ← Main experimental driver
-│   ├── workloads.py             ← WorkloadGenerator (A–D)
-│   └── cpp_adapter.py           ← Subprocess wrapper for C++ runner
-│
-├── cpp/
-│   ├── runner.cpp               ← C++ runner (stdin → JSON line)
-│   ├── counters.hpp             ← Counters struct
-│   ├── structure.hpp            ← Base Structure interface
-│   │
-│   ├── bst.hpp                  ← BST implementation (instrumented)
-│   ├── heap.hpp                 ← Heap implementation (instrumented)
-│   ├── hash.hpp                 ← Hash table implementation (instrumented)
-│   ├── array.hpp                ← Dynamic array
-│   └── list.hpp                 ← Linked list
-│
-├── build.sh                     ← Simple compile script
-│
-└── results/
-    └── (generated CSVs go here)
-```
+- `g++ source_file.cpp -o objectfile`
+
+**Where:**
+- `g++` : is the compiler invocation
+- `source_file.cpp` : is the file you want to compile
+- `-o` is a flag indicating the name of the object file. 
+
+**Additional Flags:**
+
+- `-std=c++20` : this flag tells g++ which version of c++ to use when compiling
+- `-I` : This flag tells g++ where to look for additional header files (usually ones written by you and not 'installed')
+
+**Compile Command Examples**
+
+- If I want to compile a test from inside the `src` directory and have the object file end up in the same directory (`src`), I would do this: 
+  - `g++ -std=c++20 -Iinclude tests/test_Bst.cpp -o bst`
+- If I want to compile from the `05-P02` folder and have the object file end up in that same folder, I would do this: 
+  - `g++ -std=c++20 -Isrc/include src/tests/test_Bst.cpp -o bst`
+- If I want to compile from `src` folder  and I want my object file to end up in the parent folder (`05-P02`):
+  - `g++ -std=c++20 -Iinclude tests/test_Bst.cpp -o ../bst`
+  
+
+## Programs Goal
+
+The goal is to track stats for each of the data structures we have been discussing as they process the same data sets. The "big picture" as I see it is for you to learn and understand certain choices we make when determining what structures would work best in specific conditions. But before we compare structures, we need to determine what data points are important enough to track. The following is a list (with descriptions) of the stats (data points) we will analyze. 
+
+### Comparisons
+
+- A **comparison** occurs whenever two values are evaluated relative to one another (e.g., `<`, `>`, or `==`).  Comparisons are the fundamental operations that drive decision-making in most data structures. For example, a binary search tree uses comparisons to determine whether to traverse left or right, and a sorted array uses comparisons during binary search. Tracking comparisons helps reveal how efficiently a structure locates elements as the data size grows.
+
 ---
 
-# 🎯 What Each File Does
+### Structural Operations
+- A **structural operation** is any action that modifies the internal organization of the data structure rather than simply reading data. Examples include pointer rewiring in linked structures, node rotations or swaps in trees or heaps, or element shifts in arrays. These operations typically represent the “maintenance work” required to preserve the structure’s invariants (ordering, heap property, collision chains, etc.).
 
-## `python/harness.py`
+---
 
-- Loops over:
-  - workloads
-  - N values
-  - structures
-- Runs 7 trials
-- Computes median
-- Writes CSV
+### Inserts
+- An **insert** records each attempt to add a value to the data structure. If the structure enforces uniqueness (like a set), an insert may fail if the value already exists. Insert metrics help measure how efficiently the structure accommodates growth and how costly it is to maintain ordering or structural constraints while adding new elements.
 
-This is your orchestration brain.
+---
 
-## `python/workloads.py`
+### Deletes
+ - A **delete** records each attempt to remove a value from the data structure. Depending on the implementation, deletion may involve locating the element first and then restructuring the surrounding elements or pointers. Tracking delete operations highlights how expensive removal is for different structures, particularly those that require shifting elements or reorganizing nodes.
 
-Contains:
-- `WorkloadGenerator`
-- A/B/C/D definitions
-- Seed fixed at 42
+---
 
-This guarantees identical experiments.
+### Lookups
+- A **lookup** represents a membership query such as `contains(value)` or `find(value)`. Lookups measure how quickly a structure can determine whether an element is present. Because many real-world systems perform far more reads than writes, lookup performance is often one of the most important metrics in evaluating a data structure.
 
-## `python/cpp_adapter.py`
+---
 
-- Calls `./runner`
-- Sends workload via stdin
-- Parses single JSON line
-- Returns structured result
+### Resize Events
+- A **resize event** occurs when a data structure must allocate a larger block of memory to accommodate additional elements. This commonly happens in dynamic arrays or hash tables when the current capacity is exhausted or a load factor threshold is exceeded. Although resizing is infrequent, it can be costly because existing elements often must be copied or rehashed into the new storage.
 
-No logic beyond subprocess + JSON parsing.
+---
 
-## `cpp/runner.cpp`
+### Shifts or Relinks
+- Shifts or relinks count the number of internal element movements required to maintain the structure after an insertion or deletion.
+	•	In array-based structures, this usually means shifting elements left or right to preserve ordering.
+	•	In linked structures, it represents pointer updates when nodes are inserted, removed, or rearranged.
+	•	In heaps, it may correspond to swaps during sift-up or sift-down operations.
 
-- Parses CLI args
-- Reads operations from stdin
-- Executes them
-- Prints exactly one JSON line
-- Exits
+- Tracking these movements helps distinguish between structures that rely on pointer manipulation versus those that require large memory moves, which can have very different performance characteristics on real hardware.
 
-No workload generation inside C++.
-
-## `cpp/counters.hpp`
-
-Just:
+---
+To track the above list of items, you will need to add a bit of code to each structure. Below you see a list of "counters" that simply count events as they happen. 
 
 ```cpp
 struct Counters {
@@ -624,379 +124,312 @@ struct Counters {
     long long deletes = 0;
     long long lookups = 0;
     long long resize_events = 0;
+    long long shifts_relinks = 0;
 };
 ```
 
-## `cpp/structure.hpp`
-
-Defines:
+Basic example:
 
 ```cpp
-class Structure {
+#include "Counters.hpp"
+
+class DS{
+private:
+    Counters c;
+    void _insert(Node* root, x){
+        // this method keeps comparing values to find correct location
+        // so we increment comparisons.
+        c.comparisons++
+    })
 public:
-    virtual ~Structure() = default;
-    virtual const char* name() const = 0;
+    void insert(int x){
+        c.inserts++;
+        _insert(Node* root, x);
+    }
+}
 
-    virtual void reset() = 0;
-    virtual void reset_counters() = 0;
-    virtual Counters counters() const = 0;
+So you can create an instance of the Counters in each class, and then add the necessary lines of code in each particular function to track all the stats. 
 
-    virtual void insert(int x) = 0;
-    virtual void erase(int x) = 0;
-    virtual bool contains(int x) = 0;
+- You can placer and instance of the Counters struct in each class as a data member. No inheritance necessary, composition only.
+- By incrementing the right values in the right methods, you can track what the structure is doing. 
+- Notice all the reset and return counters? After every run, you will return that instance of the counts and save them appropriately.
+
+```cpp
+class BST  {
+    Node* root; 
+    Counters counters;
+    string name;
+    // private find, delete, insert methods up here counting comparisons
+public:
+    BST(){
+        name = "BST";
+    }
+    string name(){
+        return name; 
+    }
+
+    void reset()  { 
+        /* clear your DS */ 
+    }
+
+    void reset_counters()  { 
+        // create a new instance 
+        counters = Counters{}; 
+    }
+
+    Counters counters() { 
+        return counters; 
+    }
+
+    void insertKey(int k)  {
+        counters.inserts++;
+        counters.structural_ops += 1;
+
+        // This next one would be done in the private _insertKey method
+        // while it is traversing (comparing) looking for the key
+        counters.comparisons += 1;
+    }
+
+    void deleteKey(int k)  {
+        counters.deletes++;
+        counters.structural_ops += 1;
+
+        // This next one would be done in the private _deleteKey method
+        // while it is traversing (comparing) looking for the key
+        counters.comparisons += 1;
+    }
+
+    bool findKey(int k)  {
+        counters.lookups++;
+
+        // This next one would be done in the private _findKey method
+        // while it is traversing (comparing) looking for the key
+        counters.comparisons += 1;
+        return _findKey(root,k);
+    }
 };
 ```
-
-That keeps everything consistent.
-
 ---
 
-## The actual structures (`bst.hpp`, etc.)
+## Workload Types
 
-Each:
-- Includes counters
-- Increments properly
-- Does not print anything
-- Does not know about workloads
-- Does not know about trials
+Above we discuss (well list) the data structures we will compare, we discuss how to compile some code, and we discuss a bit about counting events for each structure. Now we need to discuss the different workload types, which very much impact which data structure we would normally choose. But for our experiment, we will expose each structure to all workload types. Just for a simple overview, the major workload types are:
 
-They are pure structures.
+- Build once, tons of searches with few inserts and deletes (stable structure)
+- Highly fluctuating: lots of inserts and deletes with few searches. 
+- Mix : a little bit of everything 
 
----
+A little more to think about that doesn't have a lot to do with our experiment (except "is it ordered") because ordered data destroys a binary search tree that doesn't do rotations. 
 
-## `build.sh`
+- Type of data (string, integer)
+- **Is it ordered**
+- Is it mixed
+- Is it random
+- is it missing values
 
-Minimal:
+So based on some pretty common workload experiences, here are 4 that we will use to test our structures:
 
-```bash
-#!/bin/bash
-g++ -O2 -std=c++20 -Wall -Wextra -pedantic \
-    cpp/runner.cpp -o runner
+### Workload A
+
+- Random inserts followed by random lookups (not a ton of fluctuation)
+
+- Pattern:
+```
+     insert
+     insert
+     insert
+     ...
+     contains
+     contains
 ```
 
-(You can expand later.)
 
----
+---------------------------------------------------------
+### Workload B
 
-# 🧠 What You Do NOT Need
 
-You do NOT need:
+- Same as workload A except **inserts are sorted first**
+- This often stresses ordered data structures differently 
+- Example:  BSTs without balancing
 
-- Multiple harness versions
-- Multiple runner versions
-- Profilers
-- Per-structure Python code
-- Multiple JSON formats
-- Separate workload generators in C++
 
-If you keep workload generation strictly in Python, you eliminate half the confusion.
+---------------------------------------------------------
+### Workload C
 
----
+- Mixed workload with random ordering of operations.
 
-# 🧩 Who Owns What?
+- Operation mix:
+  - 50% contains
+  - 25% insert
+  - 25% delete
 
-| Component            | Owned By |
-| -------------------- | -------- |
-| Workload definitions | Python   |
-| Trial repetition     | Python   |
-| Median calculation   | Python   |
-| Execution timing     | C++      |
-| Structural counters  | C++      |
-| CSV writing          | Python   |
+- Deletes only occur if something exists in the population.
 
-That division is clean and stable.
 
----
+---------------------------------------------------------
+### Workload D
 
-# 🔥 Simplification Rule
+- Insert n items then perform heavy lookup activity (stable structure).
 
-If a file:
-
-- prints debugging info to stdout  
-- generates random numbers inside C++  
-- knows about N values internally  
-- runs multiple trials internally  
-
-…it’s wrong.
-
-The runner does one job:
-> Read ops. Execute. Print metrics.
-
----
-
-# 🎯 Final Sanity Check
-
-If you can answer “yes” to these, your folder is correct:
-
-- Does C++ generate random numbers? → **No**
-- Does Python know about comparisons? → **No**
-- Does C++ know about trials? → **No**
-- Can I swap BST with Treap without touching Python? → **Yes**
-
-If yes to all → you are clean.
-
----
-
-When you get back later this week, we’ll do the exact same clarity pass for the Final Project.
-
-For now: breathe. You’re organized again.
+- Pattern:
+   - n inserts
+   - 5n lookups
+- Useful for read-heavy workloads.
 
 ---
 
 
-# 🎯 Final Note
+## Track and Save Counts
 
-This assignment is about understanding structure behavior.
+Now we discuss comparing all the runs for each structure. If you're not going to use a runner file to control all the runs (which is ok), then I would recommend creating all of the input files first. 
 
-Theory predicts trends.
+### Workloads and Saving Stats
 
-Your job is to verify and interpret them.
+Assuming your structures have the counting code added and now you just need to count everything for each run, lets look at how we might do the big experiment. As I stated, the simple path is to create all the workload files with each holding a different workload type (A-D) and a different number of operations (1000,5000,10000,20000). How do we do this?
 
-Treat this as a controlled lab, not a timing contest.
-
-
-```yaml
-id: algos-program1-counter-definitions-2026-03-03
-course: 5243 Algorithms
-assignment: Program_1
-deliverable: counter_definition_standard
-goal: consistent_metrics_across_groups_and_languages
-counters:
-  - comparisons
-  - structural_ops
-  - inserts
-  - deletes
-  - lookups
-  - resize_events
-includes:
-  - global_rules
-  - per_structure_rules
-  - examples
-  - audit_checks
+```
+📁 workLoads
+├── 📕workLoad_A_1000.json
+├── 📕workLoad_A_5000.json
+├── 📕workLoad_A_10000.json
+├── 📕workLoad_A_20000.json
+├── 📕workLoad_B_1000.json
+├── 📕workLoad_B_5000.json
+├── 📕workLoad_B_10000.json
+├── 📕workLoad_B_20000.json
+├── 📕workLoad_C_1000.json
+├── 📕workLoad_C_5000.json
+├── 📕workLoad_C_10000.json
+├── 📕workLoad_C_20000.json
+├── 📕workLoad_D_1000.json
+├── 📕workLoad_D_5000.json
+├── 📕workLoad_D_10000.json
+└── 📕workLoad_D_20000.json
 ```
 
-Love it. This is exactly how you prevent “my comparisons are smaller because I counted less stuff” — aka *academic performance optimization*.
+## Workload Generator
 
-Below is a **drop-in “Counter Definitions Standard”** you can paste straight into Program 1. It defines what to count, how to count it, and includes sanity checks.
+The workload generator needs to be compiled as well. I would compile it from where it is in the `src` folder like this: 
 
----
+- `g++ -std=c++20 -Iinclude workload_generator.cpp -o workload_generator`
+  
+Once you get it compiled, run it like so: 
 
-# Program 1 Counter Definitions Standard
+- `./workload_generator -h` 
 
-## Counters you must report
+and you should see something like: 
 
-All structures must report:
-
-- `comparisons`
-- `structural_ops`
-- `inserts`
-- `deletes`
-- `lookups`
-- `resize_events` (0 for structures that don’t resize)
-
-**Rule:** `inserts + deletes + lookups` must match the workload’s operation totals (except when Workload C substitutes a delete with a lookup due to emptiness).
-
----
-
-# Global counting rules
-
-## What counts as a `comparison`
-A **comparison** is counted when your code evaluates an **ordering/equality decision involving a key** that affects control flow.
-
-Count **exactly one** comparison whenever you do one of these checks:
-
-- `x < y`
-- `x <= y`
-- `x > y`
-- `x >= y`
-- `x == y`
-- `x != y`
-
-### Important clarifications
-- **Do not** count loop conditions like `i < n` or pointer null checks as key comparisons.
-- **Do** count comparisons against stored keys during search/insert/delete.
-- If you do a combined check like:
-  - `if (x < key) ... else if (x > key) ... else ...`
-  then that can be **2 comparisons** in the “not equal” case.
-  - (Because you actually evaluated two relational checks.)
-
-## What counts as a `structural_op`
-A structural operation is a **data-structure-specific “step”** that meaningfully reflects work beyond comparisons.
-
-This is your catch-all for:
-- pointer traversals
-- swaps
-- rotations
-- probes
-- node splits
-- etc.
-
-If you’re unsure whether something should be “comparison” or “structural_op”:
-- if it’s a key relation test → `comparisons`
-- if it’s a movement/rearrangement/traversal → `structural_ops`
-
----
-
-# Per-structure definitions
-
-## 1) Dynamic Array (vector-style)
-
-### comparisons
-- Only count key comparisons you explicitly do (many array ops won’t compare keys).
-- If you implement a linear search, each `arr[i] == x` is **1 comparison**.
-
-### structural_ops
-Count:
-- each element shift due to insert/delete in the middle: **+1 structural_op per element moved**
-- each append is **+1 structural_op**
-- each resize copy move is **+1 structural_op per element copied**
-- optionally: treat resize as `resize_events += 1`
-
-### resize_events
-- Increment when capacity increases (and you reallocate/copy).
-
----
-
-## 2) Linked List
-
-### comparisons
-Count:
-- each `node.value == x` check during search/remove: **+1 comparison**
-
-### structural_ops
-Count:
-- each node visited/advanced pointer step: **+1 structural_op**
-  - i.e., when you move from one node to `next`
-
-(Yes, comparisons and traversals will often rise together. That’s fine—this is reality.)
-
----
-
-## 3) Unbalanced BST
-
-### comparisons
-Count:
-- each comparison between `x` and `node.key` used to decide direction or equality:
-  - `x < node.key` → +1
-  - `x > node.key` → +1
-  - `x == node.key` → +1 (if you explicitly check it)
-
-**Standard pattern:**
-```cpp
-if (x < k) ...
-else if (x > k) ...
-else found
 ```
-Counts:
-- Found case (equal): 2 comparisons (x<k false, x>k false) *unless you explicitly do x==k*
-- Left/right case: 1 comparison in the branch taken + possibly 1 more if using else-if logic
+Usage:
+  workload_generator [OPTIONS]
 
-To avoid ambiguity, you may implement a helper `cmp(x, k)` that returns -1/0/1 and increments `comparisons` exactly once per node visited. That’s *ideal*.
+Options:
+  -w, --workload <TYPE>       Workload type (A,B,C,D)
+  -n, --size     <N>          Base problem size N=int
+  --preview      <K>          Preview operations K=int
+  --json                      Emit JSON output
+  -s, ---save    <FILENAME>   Save output to a file
+  -h, --help                  Show help message
 
-### structural_ops
-Count:
-- each node visit during traversal: **+1 structural_op**
-- pointer re-links when deleting (each pointer reassignment): **+1 structural_op**
-- (No rotations in unbalanced BST.)
+Examples:
+./workload_generator --json -w C -n 1000 > workload.json
+./workload_generator --json -workload B -size 5000 --save workload_B_5000.json
+```
 
----
+This shows you a couple of examples on how to run the workload_generator. 
+- This example: `./workload_generator --json -w C -n 1000 > workload.json` 
+  - **`--json`** says output a json object (list)
+  - **`-w C`** uses workload_C for the job type
+  - **`-n 1000`** generates 1000 events
+  - `>` redirects output into a file called `workload.json`
+  
+- This example: `./workload_generator --json -workload B --size 5000 --save workload_B_5000.json`
+  - Also will output json
+  - **`--workload`** is equivalent to `-w` and this time the job types will be from `B`
+  - **`--size`** is equivalent to `-n` and will generate 5000 events
+  - **`--save`** is almost like redirect > but it actually opens the filename that comes after the --save flag, in this case: `workload_B_5000.json`
 
-## 4) Binary Heap (array-based min-heap or max-heap)
+Using the workload generator you can create the files that you need for all your runs. You can do it in a file that will run all different runs of the generator. Lets call it `batch.sh`:
 
-### comparisons
-Count:
-- each comparison between heap keys during percolate up/down:
-  - parent vs child comparisons
+```sh
+./workload_generator --json -workload A  --size 1000 --save workload_A_1000.json
+./workload_generator --json -workload A  --size 5000 --save workload_A_5000.json
+./workload_generator --json -workload A --size 10000 --save workload_A_10000.json
+./workload_generator --json -workload A --size 20000 --save workload_A_20000.json
+./workload_generator --json -workload B  --size 1000 --save workload_B_1000.json
+./workload_generator --json -workload B - -size 5000 --save workload_B_5000.json
+./workload_generator --json -workload B --size 10000 --save workload_B_10000.json
+./workload_generator --json -workload B --size 20000 --save workload_B_20000.json
+# you can add the rest ...
+```
 
-### structural_ops
-Count:
-- each swap of two heap elements: **+1 structural_op**
-- each percolate step can also be counted as +1 structural_op if you prefer, but then be consistent.
+Next make `batch.sh` executable: 
 
-**Recommendation (consistent & simple):**
-- structural_ops = swaps
-- comparisons = key comparisons
-That’s very clean.
+```sh
+chmod +x batch.sh
+```
 
----
+Now run it: 
 
-## 5) Hash Table
+```sh
+./batch.sh
+```
 
-You must clearly state which collision strategy you use:
-- **chaining**
-- **open addressing**
+All files created. 
 
-### comparisons
-Count:
-- each key equality check `stored_key == x` during lookup/insert/delete: **+1 comparison**
+Or maybe write a script:
 
-### structural_ops (chaining)
-Count:
-- each node visited in a chain: **+1 structural_op**
-  - (Yes, this will correlate strongly with comparisons; that’s expected.)
+```python
+#!/usr/bin/env python3
 
-### structural_ops (open addressing)
-Count:
-- each probe attempt (each slot examined): **+1 structural_op**
-- comparisons counts only when the slot is occupied and you compare keys.
+import subprocess
 
-### resize_events
-Count:
-- each rehash / resize operation: **+1 resize_events**
-Optionally also add:
-- structural_ops += number of elements reinserted during resize
+workloads = ["A", "B", "C", "D"]
+sizes = [1000, 5000, 10000, 20000]
 
-(If you do that, document it. It’s actually a good reflection of cost.)
+for w in workloads:
+    for n in sizes:
+        outfile = f"workload_{w}_{n}.json"
 
----
+        cmd = [
+            "./workload_generator",
+            "--json",
+            "--workload", w,
+            "--size", str(n),
+            "--save", outfile
+        ]
 
-# Required documentation in your report (short)
+        print("Running:", " ".join(cmd))
+        subprocess.run(cmd, check=True)
+```
 
-You must include a short section:
+- This will create the files automatically. If you want to test it first, comment out the `subprocess.run` command and just look at the output. 
+- If you want to write to a folder, then edit this line: `outfile = f"workload_{w}_{n}.json"` and add your folder name: `outfile = f"newFolder/workload_{w}_{n}.json"`
 
-## “Counter Definitions”
-- One paragraph describing exactly what increments comparisons and structural_ops for each structure.
+## File Contents
 
-They can copy from this standard—encouraged, even.
+Each workload file will hold a json list with a command and a value where the commands are ['contains','insert','delete'] and the values are some valid integer . This difference between the files depends on its size [1000.5000,10000,20000] and its workload [A,B,C,D] as defined above. 
 
----
+```json
+    [ 
+        "insert",12
+        "insert",44
+        "insert",12
+        "contains",12
+        "contains",51
+        ...
+    ]
+```
 
-# Sanity checks (you can add as “self-audit”)
+## Running Your Experiment
 
-You must verify:
+This will be up to you. The big picture again is: 
 
-1. **Workload totals match**
-   - inserts + deletes + lookups equals number of operations executed.
-
-2. **Counters grow with N**
-   - comparisons and structural_ops should generally increase as N increases.
-
-3. **BST sorted insert blows up**
-   - Workload B should show BST scaling much worse than random insert.
-
-4. **Heap lookup is painful (if they attempt it)**
-   - if they implement contains on heap by scan, comparisons scale ~N.
-
----
-
-# Lastly
-
-I need you to write a validation function
-
-- `validate_counters()` that prints:
-  - operations executed
-  - counters summary
-  - and asserts totals are consistent
-
-That prevents oops I forgot to increment something” disasters.
+1. Add Counter code to each data structure so that you can save the counts for a single run. 
+2. Generate your workloads.
+3. Run each data structure with each workload saving your results either in a file, or append it to a csv or json structure.
 
 
 ## Deliverables
 
-coming soon.
-
-## Footnotes
-
-[^1]: Unless there is an error in the code logic. 
-[^2]: Limit on the number of values to be placed in the BST.
-[^3]: A random lookup doesn't mean your searching with an existing number in the structure, random = might not be there
+TBD

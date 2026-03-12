@@ -1,0 +1,8 @@
+Counters have been added to each data structure
+workloads have been created
+
+
+ToDo:
+
+Return counter structure somewhere
+create script to run each workload on each ds and output counter information to csv
