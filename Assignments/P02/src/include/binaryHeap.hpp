@@ -74,6 +74,8 @@ public:
         if (data.empty()) {
             throw std::runtime_error("heap is empty");
         }
+
+        c.lookups++;
         return data[0];
     }
 
@@ -116,5 +118,13 @@ public:
             c.structural_ops++;
             siftDown(i);
         }
+    }
+
+     const char *name() const {
+        return "BinaryHeap";
+    }
+
+    Counters get_counters() const {
+        return c;
     }
 };

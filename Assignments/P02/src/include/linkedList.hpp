@@ -29,7 +29,7 @@ public:
 
     bool insert(int value) {
 
-        c.lookups++;
+        c.inserts++;
 
         c.comparisons++;
         if (contains(value))
@@ -99,5 +99,13 @@ public:
         }
 
         std::cout << "\n";
+    }
+
+    const char *name() const {
+        return "LinkedList";
+    }
+
+    Counters get_counters() const {
+        return c;
     }
 };

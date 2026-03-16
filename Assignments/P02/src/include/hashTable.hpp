@@ -88,4 +88,12 @@ public:
 
         return false;
     }
+
+    const char *name() const {
+        return "HashTable";
+    }
+
+    Counters get_counters() const {
+        return c;
+    }
 };

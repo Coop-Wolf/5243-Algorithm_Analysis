@@ -149,4 +149,12 @@ public:
         }
         std::cout << "]\n";
     }
+
+    const char *name() const {
+        return "SortedArraySet";
+    }
+
+    Counters get_counters() const {
+        return c;
+    }
 };

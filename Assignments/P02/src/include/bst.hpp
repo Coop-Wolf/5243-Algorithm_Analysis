@@ -187,4 +187,8 @@ public:
     virtual const char *name() const {
         return "BST";
     }
+
+    Counters get_counters() const {
+        return c;
+    }
 };

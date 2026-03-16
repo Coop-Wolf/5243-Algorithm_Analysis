@@ -172,4 +172,8 @@ public:
     int height() const {
         return height(root);
     }
+
+    Counters get_counters() const {
+        return c;
+    }
 };
