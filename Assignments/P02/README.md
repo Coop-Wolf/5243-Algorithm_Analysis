@@ -1,58 +1,6 @@
 ## Program 2
 
 
-## Struggles
-
-1. Creating the main.cpp file that would create objects of each structure
-2. Having to create template functions because there is not base class for the structures
-3. Getting the csv files to work
-4. Having to parse json input
-5. Finding workaround for heap, since it doesn't have insert, delete or contains
-
-
-### Folder Structure
-
-Here is the new organization for `Program 02`'s 
-
-```txt
-📁 05-P02
-├── ✳️ README.md                    // This file
-├── 📁 results                      // Folder containing results
-|   ├── 📁 result.csv
-├── 📁 workloads                    // Folder workloads generated
-|   ├── 📁 workload_A_1000.json
-|   ├── 📁 workload_B_1000.json
-|   ├── 📁 ...
-|   ├── 📁 ...
-|   ├── 📁 ...
-|   ├── 📁 workload_D_20000.json
-└── 📁 src                          // Code files  
-    ├── 📁 include                  // Include hpps can't run directly
-    │   ├── 📕 binaryHeap.hpp
-    │   ├── 📕 bst.hpp
-    │   ├── 📕 counters.hpp
-    │   ├── 📕 hashTable.hpp
-    │   ├── 📕 json.hpp
-    │   ├── 📕 linkedList.hpp
-    │   ├── 📕 sortedArraySet.hpp
-    │   ├── 📕 termcolor.hpp
-    │   └── 📕 usagePrinter.hpp
-    ├── 📁 tests        // Tests for each of the hpp data structures
-    │   ├── 📕 test_BinaryHeap.cpp  
-    │   ├── 📕 test_Bst.cpp
-    │   ├── 📕 test_HashTable.cpp
-    │   ├── 📕 test_LinkedList.cpp
-    │   └── 📕 test_SortedArraySet.cpp
-    ├── 📕 main                         c++ executable
-    ├── 📕 main.cpp                     main code
-    ├── 📕 runner.py                    script to run all structures on all workloads
-    ├── 📕 workload_generator           c++ executable
-    └── 📕 workload_generator.cpp       workload generator code
-    ├── 📕 bash.sh                      script to generate multiple workloads
-```
-
-Where the `src` folder holds all the `hpp's` in the `include` folder and the `tests` folder containing `cpp's` that should compile and run showing each data structure's hpp works. 
-
 ## Programs Goal
 
 The goal is to track stats for each of the data structures we have been discussing as they process the same data sets. The "big picture" as I see it is for you to learn and understand certain choices we make when determining what structures would work best in specific conditions. But before we compare structures, we need to determine what data points are important enough to track. The following is a list (with descriptions) of the stats (data points) we will analyze. 
@@ -154,6 +102,58 @@ So based on some pretty common workload experiences, here are 4 that we will use
 - Useful for read-heavy workloads.
 
 ---
+
+
+### Folder Structure
+
+Here is the new organization for `Program 02`'s 
+
+```txt
+📁 05-P02
+├── ✳️ README.md                    // This file
+├── 📁 results                      // Folder containing results
+|   ├── 📁 result.csv
+├── 📁 workloads                    // Folder workloads generated
+|   ├── 📁 workload_A_1000.json
+|   ├── 📁 workload_B_1000.json
+|   ├── 📁 ...
+|   ├── 📁 ...
+|   ├── 📁 ...
+|   ├── 📁 workload_D_20000.json
+└── 📁 src                            // Code files  
+    ├── 📁 include                    // Include hpps can't run directly
+    │   ├── 📕 binaryHeap.hpp
+    │   ├── 📕 bst.hpp
+    │   ├── 📕 counters.hpp
+    │   ├── 📕 hashTable.hpp
+    │   ├── 📕 json.hpp
+    │   ├── 📕 linkedList.hpp
+    │   ├── 📕 sortedArraySet.hpp
+    │   ├── 📕 termcolor.hpp
+    │   └── 📕 usagePrinter.hpp
+    ├── 📁 tests                      // Tests for each of the hpp data structures
+    │   ├── 📕 test_BinaryHeap.cpp  
+    │   ├── 📕 test_Bst.cpp
+    │   ├── 📕 test_HashTable.cpp
+    │   ├── 📕 test_LinkedList.cpp
+    │   └── 📕 test_SortedArraySet.cpp
+    ├── 📕 main                       // c++ executable
+    ├── 📕 main.cpp                   // main code
+    ├── 📕 workload_generator         // c++ executable
+    ├── 📕 workload_generator.cpp     // workload generator code
+    ├── 📕 runner.py                  // script to run all structures on all workloads
+    └── 📕 bash.sh                    // script to generate multiple workloads
+```
+
+
+
+## Struggles
+
+1. Creating the main.cpp file that would create objects of each structure
+2. Having to create template functions because there is not base class for the structures
+3. Getting the csv files to work
+4. Having to parse json input
+5. Finding workaround for heap, since it doesn't have insert, delete or contains
 
 
 ## How to Run
