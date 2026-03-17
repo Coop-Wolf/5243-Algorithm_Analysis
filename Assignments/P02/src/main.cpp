@@ -24,6 +24,11 @@ template <typename DS>
 void run_workload(ifstream& infile, string workload_file, ofstream& outfile, const string& structure_name);
 
 // Overload for BinaryHeap since it uses different methods
+//
+//  When workload file wants to insert, we call push()
+//  When workload file wants to delete a certain value, we ignore the value and pop the top element
+//  When workload file wants to search for a value, we ignore the value and just call top()
+//
 void run_workload(ifstream& infile, string workload_file, ofstream& outfile);
 
 // Function to record counters to output file
@@ -129,7 +134,7 @@ void run_workload(ifstream& infile, string workload_file, ofstream& outfile, con
         if (op.op == "insert")
             ds.insert(op.value);
 
-        else if (op.op == "erase")
+        else if (op.op == "delete")
             ds.erase(op.value);
 
         else if (op.op == "contains")
@@ -155,7 +160,7 @@ void run_workload(ifstream& infile, string workload_file, ofstream& outfile)
         {
             ds.push(op.value);
         }
-        else if (op.op == "erase")
+        else if (op.op == "delete")
         {
             ds.pop();
         }
