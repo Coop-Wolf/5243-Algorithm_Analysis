@@ -7,10 +7,11 @@
 # include "include/avl.hpp"
 # include <string>
 # include <vector>
+# include <filesystem>
 
 using namespace std;
 
-// Struct to represent an operation from workdload file
+// Struct to represent an operation from workload file
 struct Operation {
     string op;
     int value;
@@ -180,9 +181,12 @@ void record(const DS& ds, string workload_file, ofstream& outfile, const string&
     // Get counters from data structure
     const Counters& c = ds.get_counters();
 
+    // remove folder name and file extension from file
+    string file_name = filesystem::path(workload_file).stem().string();
+
     // Output structure name and counters to csv file
     outfile << structure_name << ","
-            << workload_file << ","
+            << file_name << ","
             << c.comparisons << ","
             << c.structural_ops << ","
             << c.inserts << ","

@@ -78,11 +78,11 @@ public:
                     head = curr->next;
 
                 c.structural_ops++;
+                c.deletes++;
                 delete curr;
                 return true;
             }
 
-            c.deletes++;
             prev = curr;
             curr = curr->next;
         }

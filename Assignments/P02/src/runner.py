@@ -6,8 +6,8 @@ import subprocess
 # list fo workloads
 # for each structure run a workload and save output to csv file
 
-# list of each structure
-structures = ["list", "array", "hash", "bst", "avl", "heap"]
+# list of each structure // not including avl. (doesn't have contains method implemented yet)
+structures = ["list", "array", "hash", "bst", "heap"]
 
 # read in all files in workloads folder
 workload_dir = "../workloads"
