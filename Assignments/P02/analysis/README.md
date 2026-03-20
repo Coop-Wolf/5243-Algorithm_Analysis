@@ -43,3 +43,15 @@ Since each lookup in a linked list requires linear traversal, the large number o
 In contrast, data structures optimized for fast lookup operations, such as hash tables and balanced trees, perform significantly better under this workload.
 
 ---
+
+## Structural Ops
+
+In Workload A, I analyzed the differences in structural operations performed by each data structure.
+
+The hash table had a significantly higher structural operation count compared to the other structures. 
+This is primarily due to the cost of resizing — each time the load factor exceeds 75%, the table must 
+rehash every existing element into a new, larger table, since each element's bucket index depends on 
+the table's capacity. In the most extreme cases, the hash table resized 12 times, which accounts for 
+the substantial structural operation count seen in the graph.
+
+---

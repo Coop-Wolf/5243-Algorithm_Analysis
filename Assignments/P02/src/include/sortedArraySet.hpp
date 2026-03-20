@@ -18,8 +18,13 @@ private:
         int *newData = new int[newCapacity];
 
         for (std::size_t i = 0; i < count; i++) {
+
+            // Comparison for loop condition
+            c.comparisons++;
             newData[i] = data[i];
         }
+
+
         c.structural_ops++;
         delete[] data;
         data = newData;
@@ -51,7 +56,7 @@ private:
     }
 
 public:
-    explicit SortedArraySet(std::size_t initialCapacity = 8)
+    explicit SortedArraySet(std::size_t initialCapacity = 10)
         : data(new int[initialCapacity]), count(0), capacity(initialCapacity) {}
 
     ~SortedArraySet() {

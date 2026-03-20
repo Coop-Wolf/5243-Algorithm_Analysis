@@ -8,6 +8,9 @@ class HashTable {
 private:
     std::vector<std::vector<int>> table;
     std::size_t capacity;
+    std::vector<int> resize_values;
+    std::size_t size;
+
     mutable Counters c;
 
     // Integer hash function
@@ -23,13 +26,59 @@ private:
         return hash(key) % capacity;
     }
 
+    // Resize hash to prime number close to double current size
+    void resize()
+    {
+        // Hold new size of hash
+        int new_size = 0;
+
+        for(int i=0; i < resize_values.size(); i++)
+        {
+            c.comparisons++; // For loop comparison
+
+            c.comparisons++;
+            if (resize_values[i] > (int)capacity)
+            {
+                new_size = resize_values[i];
+                break;
+            }
+        }
+
+        // Create new table with new capacity
+        std::vector<std::vector<int>> temp_table(new_size);
+
+        // Rehash all existing elements into temp table
+        capacity = new_size;
+        for(auto &bucket : table)
+        {
+            for(int key : bucket)
+            {
+                c.structural_ops++;
+                temp_table[indexFor(key)].push_back(key);
+            }
+        }
+
+        // point table to new resized table
+        table = std::move(temp_table);
+
+    }
+
 public:
-    explicit HashTable(std::size_t cap = 101)
-        : table(cap), capacity(cap) {}
+    explicit HashTable(std::size_t cap = 7)
+        : table(cap), capacity(cap), size(0), resize_values({11, 23, 47, 97, 197, 397, 797, 1597,
+    3203, 6421, 12853, 25717, 51437, 102877, 205759}) {}
 
     bool insert(int key) {
 
         c.inserts++;
+
+        // Check load factor and resize if needed
+        c.comparisons++;
+        if (size >= capacity * .75)
+        {
+            c.resize_events++;
+            resize();
+        }
 
         std::size_t idx = indexFor(key);
         auto &bucket = table[idx];
@@ -44,7 +93,9 @@ public:
             }
         }
 
+        // Insert new key into vector (chaining) and increment size of hash
         bucket.push_back(key);
+        size++;
         return true;
     }
 
