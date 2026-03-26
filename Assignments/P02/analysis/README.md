@@ -54,4 +54,9 @@ rehash every existing element into a new, larger table, since each element's buc
 the table's capacity. In the most extreme cases, the hash table resized 12 times, which accounts for 
 the substantial structural operation count seen in the graph.
 
+## Hash Structure
+
+Through all workloads, the hash structure has performed well in comparisons. However, when it comes
+to the structural operations it has to do, there does seem to be a large increase in it.
+
 ---

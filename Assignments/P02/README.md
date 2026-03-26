@@ -110,14 +110,15 @@ Here is the new organization for `Program 02`'s
 
 ```txt
 📁 05-P02
-├── ✳️ README.md                    // This file
-├── 📁 results                      // Folder containing results
+├── ✳️ README.md                     // This file
+├── 📁 results                       // Folder containing results
 |   ├── 📁 result.csv
 ├── 📁 analysis                      // Folder containing graphs and charts
 |   ├── 📁 workload_A.png
 |   ├── 📁 workload_B.png
 |   ├── 📁 workload_C.png
 |   ├── 📁 workload_D.png
+|   ├── 📁 README.md                // Contains analysis of structures
 ├── 📁 workloads                    // Folder workloads generated
 |   ├── 📁 workload_A_1000.json
 |   ├── 📁 workload_B_1000.json
